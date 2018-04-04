@@ -1,6 +1,6 @@
 # Boards are square areas of N rows and N columns.
 #     - Rows and columns in boards are numbered starting from 1.
-
+import Disk
 
 def is_proper_board(board):
     """
@@ -13,7 +13,18 @@ def is_proper_board(board):
         ASSUMPTIONS
         - None
     """
-    pass
+
+    if not dimension(board) => 0:
+        return False
+    elif board == None:
+        return False
+    for row in board:
+        for cell in row:
+            if not isinstance(None, cell):
+                return False
+            elif is_proper_disk(dimension(board), cell)
+
+
 
 
 def is_playable_board(board):
@@ -52,7 +63,19 @@ def init_board(dimension, given_disks=()):
           necessarily a playable board. Notice also that some disks on the board
           might satisfy the conditions to explode.
     """
-    pass
+    board = []
+    ###1) Make a board with the asked dimension all filled with None
+    for sequence in given_disks:
+        if len(sequence)
+    for row in range(0, dimension-1):
+        for kolom in row[0]:
+            return [row[kolom]]
+
+        board.append(disk_sequence)
+
+
+
+
 
 
 def get_board_copy(board):
