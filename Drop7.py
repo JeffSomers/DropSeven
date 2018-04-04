@@ -27,7 +27,7 @@ def drop_disk_at(board, disk=None, column=None):
           board and it is not cracked.
         - The given column is not completely filled with disks.
     """
-
+    print('hello')
 
 
 def best_drop_for_disk(board,disk):

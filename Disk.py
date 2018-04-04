@@ -22,10 +22,9 @@ def is_proper_disk(dimension, disk):
     """
     value = disk[1]
     state = disk[0]
+    afronding = dimension%value
 
-    if value<0 or value> dimension:
-        return False
-    elif isinstance(value , int) is False:
+    if afronding != 0 or value<0 or value> dimension:
         return False
     elif state not in [VISIBLE, WRAPPED, CRACKED]:
         return False

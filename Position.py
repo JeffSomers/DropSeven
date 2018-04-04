@@ -1,21 +1,4 @@
 # Positions identify individual cells on game boards.
-def column(position):
-    """
-    :param position:
-    :return: gives back the the column of the position (in this case by returning the
-    first element).
-    """
-    return position[0]
-
-def row (position):
-    """
-    :param position:
-    :return: gives back the the row of the position (in this case by returning the
-    second element).
-    """
-    return position[1]
-
-
 
 def is_proper_position(dimension, position):
     """
@@ -30,17 +13,7 @@ def is_proper_position(dimension, position):
         ASSUMPTIONS
         - None
     """
-    Max_Row= dimension + 1
-    Max_Column= dimension
-    if len(position) != 2:
-        return False
-    elif column(position) > Max_Column or row(position) > Max_Row:
-        return False
-    elif column(position) <=0 or row(position) <= 0:
-        return False
-    elif isinstance(position, tuple) is False:
-        return False
-    return True
+    pass
 
 
 def is_overflow_position(dimension,position):
@@ -52,11 +25,7 @@ def is_overflow_position(dimension,position):
         - The given position is a proper position for any board with the
           given dimension.
     """
-    Overflow_row = dimension + 1
-    if row(position) == Overflow_row:
-        return True
-    return False
-
+    pass
 
 
 def left(dimension, position):
@@ -69,15 +38,7 @@ def left(dimension, position):
         - The given position is a proper position for any board with the
           given dimension.
     """
-    copy_list_position = list(position)
-    if column(copy_list_position) == 1:
-        return None
-    else:
-        copy_list_position[0] -= 1
-        changed_position = tuple(copy_list_position)
-        return changed_position
-
-
+    pass
 
 
 def right(dimension, position):
@@ -90,13 +51,7 @@ def right(dimension, position):
        - The given position is a proper position for any board with the
          given dimension.
      """
-    copy_list_position = list(position)
-    if column(copy_list_position) == dimension:
-        return None
-    else:
-        copy_list_position[0] += 1
-        changed_position = tuple(copy_list_position)
-        return changed_position
+    pass
 
 
 def up(dimension, position):
@@ -109,14 +64,7 @@ def up(dimension, position):
         - The given position is a proper position for any board with the
           given dimension.
      """
-    copy_list_position = list(position)
-    max_row = dimension + 1
-    if row(copy_list_position) == max_row:
-        return None
-    else:
-        copy_list_position[1] += 1
-        changed_position = tuple(copy_list_position)
-        return changed_position
+    pass
 
 
 def down(dimension, position):
@@ -129,13 +77,7 @@ def down(dimension, position):
         - The given position is a proper position for any board with the
           given dimension.
      """
-    copy_list_position = list(position)
-    if row(copy_list_position) == 1:
-        return None
-    else:
-        copy_list_position[1] -= 1
-        changed_position = tuple(copy_list_position)
-        return changed_position
+    pass
 
 
 def next(dimension, position):
@@ -151,18 +93,7 @@ def next(dimension, position):
         - The given position is a proper position for any board with the
           given dimension.
      """
-    Max_Row = dimension + 1
-    Max_Column = dimension
-    if row(position) == Max_Row and column(position) == Max_Column:
-        return None
-    elif column(position) == dimension:
-        up_position = up(dimension, position)
-        copy_list_up_position = list(up_position)
-        copy_list_up_position[0] = 1                         ### kan ik hier niet de kolom van nemen?????
-        mostleft_up_position = tuple(copy_list_up_position)
-        return mostleft_up_position
-    else:
-        return right(dimension, position)
+    pass
 
 
 def get_all_adjacent_positions(dimension, positions):
@@ -174,25 +105,4 @@ def get_all_adjacent_positions(dimension, positions):
         - Each position in the given collection of positions is a proper position
           for any board with the given dimension.
     """
-    adjacent_positions = set()
-
-    for one_position in positions:
-        possible_Left_positions = left(dimension,one_position)
-        if possible_Left_positions is not None:
-            adjacent_positions.add(possible_Left_positions)
-
-        possible_Right_positions = right(dimension, one_position)
-        if possible_Right_positions is not None:
-            adjacent_positions.add(possible_Right_positions)
-
-        possible_Up_positions = up(dimension, one_position)
-        if possible_Up_positions is not None:
-            adjacent_positions.add(possible_Up_positions)
-
-        possible_Down_positions = down(dimension, one_position)
-        if possible_Down_positions is not None:
-            adjacent_positions.add(possible_Down_positions)
-
-    return adjacent_positions
-
-
+    pass

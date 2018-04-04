@@ -86,7 +86,6 @@ def test_Is_Proper_Board__Legal_Board(score, max_score):
                 ((None, wrapped_disk_value_3,),
                  [],
                  (visible_disk_value_1, None, wrapped_disk_value_2, visible_disk_value_3)))
-        print(basic_board)
         assert Board.is_proper_board(basic_board)
         score.value += 3
     except:
