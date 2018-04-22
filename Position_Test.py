@@ -1,6 +1,5 @@
 import Position
 
-
 def test_Is_Proper_Position__Legal_Case(score, max_score):
     """Function is_proper_position: given position is proper position."""
     max_score.value += 1

@@ -1,6 +1,7 @@
 import Board
 import Disk
 
+
 wrapped_disk_value_1 = None
 wrapped_disk_value_2 = None
 wrapped_disk_value_3 = None
@@ -86,7 +87,6 @@ def test_Is_Proper_Board__Legal_Board(score, max_score):
                 ((None, wrapped_disk_value_3,),
                  [],
                  (visible_disk_value_1, None, wrapped_disk_value_2, visible_disk_value_3)))
-        print(basic_board)
         assert Board.is_proper_board(basic_board)
         score.value += 3
     except:
@@ -111,6 +111,7 @@ def test_Is_Playable_Board__Legal_Board(score, max_score):
         assert Board.is_playable_board(test_board_4)
         assert Board.is_playable_board(test_board_6)
         score.value += 5
+
     except:
         pass
 

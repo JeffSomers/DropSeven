@@ -1,6 +1,7 @@
 import Board
 import Disk
 import copy
+import Position
 wrapped_disk_value_1 = None
 wrapped_disk_value_2 = None
 wrapped_disk_value_3 = None
@@ -72,16 +73,38 @@ def set_up():
              (cracked_disk_value_1_B,),
              [wrapped_disk_value_3_C, visible_disk_value_2_B]))
 
+
 set_up()
 
-assert not Board.is_to_explode(test_board_6, (2, 2))
-assert not Board.is_to_explode(test_board_6, (5, 1))
+print(set_disk_at(test_board_4, (1,2),wrapped_disk_value_1 ))
+print(test_board_4)
 
 
 
-
-
-
-
-
-
+def set_disk_at(board, position, disk):
+    """
+        Fill the cell at the given position on the given board with the given disk.
+        - The disk nor any other disk will yet explode, even if the conditions
+          for having an explosion are satisfied.
+        - The given disk may be None, in which case the disk, if any, at the given
+          position is removed from the given board, WITHOUT disks at higher positions
+          in the column dropping down one position.
+        ASSUMPTIONS
+        - The given board is a proper board, the given position is a proper
+          proper position for the given board and the given disk is a proper
+          disk for the given board.
+    """
+    ## Check if it is None to be safe
+    if disk == None:
+        disk_to_change = Board.get_disk_at(board,position)
+        print(disk_to_change)
+        if Disk.is_proper_disk(Board.dimension(board), disk_to_change) is True:
+            ###check if if rows in the same columns above have a disk
+            for row_pos in range(position[0]+1,Board.dimension(board)+1):
+                if Board.get_disk_at(board,(position[0],row_pos)) is None:
+                    return False
+    # 1) change the position in the coordinates in the matrix
+    column = position[0] - 1
+    print(column)
+    row = Board.dimension(board) - (position[1] - 1)
+    return (board[row][column])

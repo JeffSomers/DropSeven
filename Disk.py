@@ -20,10 +20,12 @@ def is_proper_disk(dimension, disk):
        ASSUMPTIONS
        - None
     """
+    if disk ==  None:
+        return False
     value = disk[1]
     state = disk[0]
 
-    if value<0 or value> dimension:
+    if value < 0 or value > dimension:
         return False
     elif isinstance(value , int) is False:
         return False
