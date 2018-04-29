@@ -30,6 +30,9 @@ def is_proper_position(dimension, position):
         ASSUMPTIONS
         - None
     """
+    if isinstance(position, tuple) is False:
+        return False
+
     Max_Row= dimension + 1
     Max_Column= dimension
     if len(position) != 2:
@@ -37,8 +40,6 @@ def is_proper_position(dimension, position):
     elif column(position) > Max_Column or row(position) > Max_Row:
         return False
     elif column(position) <=0 or row(position) <= 0:
-        return False
-    elif isinstance(position, tuple) is False:
         return False
     return True
 

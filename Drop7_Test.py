@@ -1,6 +1,9 @@
 import Position
 import Disk
 import Board
+import Disk
+import Board
+import Position
 import Drop7
 
 wrapped_disk_value_1 = None
@@ -844,14 +847,14 @@ Drop7_test_functions = \
         test_Drop_Disk_At__SuccessiveExposions,
         test_Drop_Disk_At_NoDisk,
 
-        # test_Best_Column_For_Disk_EmptyBoard,
-        # test_Best_Columns_For_Disk_SingleColumn,
-        # test_Best_Column_For_Disk_SeveralColumns,
+        test_Best_Column_For_Disk_EmptyBoard,
+        test_Best_Columns_For_Disk_SingleColumn,
+        test_Best_Column_For_Disk_SeveralColumns,
 
-        # test_Highest_Greedy_Score__NoDisks,
-        # test_Highest_Greedy_Score__Single_Placable_Disk,
-        # test_Highest_Greedy_Score__Several_Placable_Disks,
-        # test_Highest_Greedy_Score__Several_Disks_Not_All_Placable,
+        test_Highest_Greedy_Score__NoDisks,
+        test_Highest_Greedy_Score__Single_Placable_Disk,
+        test_Highest_Greedy_Score__Several_Placable_Disks,
+        test_Highest_Greedy_Score__Several_Disks_Not_All_Placable,
 
         # test_Highest_Score__NoDisks,
         # test_Highest_Score__Single_Disk_No_Explosions,

@@ -14,14 +14,16 @@ def is_proper_board(board):
         ASSUMPTIONS
         - None
     """
-
+    if isinstance(board,list) is False:           ###is deze voorwaarde nodig
+        return False
     if board == None:
         return False
     elif dimension(board) <= 0:
         return False
+
     for row in board:
         for cell in row:
-            if not cell == None and Disk.is_proper_disk(dimension(board), cell) is False:
+            if cell is not None and Disk.is_proper_disk(dimension(board),cell) is False:
                 return False
     return True
 
@@ -44,9 +46,9 @@ def is_playable_board(board):
         return False
     #If a cell stores a disk, all cells below also store a disk.
     nb_of_rows = len(board)
-    for row_position in range(nb_of_rows-2):
+    for row_position in range(nb_of_rows -1):
         row = board[row_position]                                     ###Last row doesn't need to be checked!
-        for disk_position in range(len(row)-1):
+        for disk_position in range(len(row)):
             disk = board[row_position][disk_position]
             if Disk.is_proper_disk(dimension(board), disk) is True:
                 row_underneath = row_position+1
@@ -54,20 +56,23 @@ def is_playable_board(board):
                 if Disk.is_proper_disk(dimension(board), investigated_disk) is False:
                     return False
     #The same disk is not stored at several positions on the given board.
-    #1) firt store every not-none disk in a list
-    #     all_disks_without_none= []
-    #     for row in board:
-    #         for disk in row:
-    #             if disk != None:
-    #                 all_disks_without_none.append(disk)
-    # #2) check if the list contains doubles by checking with !is!
-    #     for disk_position in range(len(all_disks_without_none)-1)
-    #         disk_to_check = all_disks_without_none[disk_position]
-    #         all_disks_without_disk_to_check = all_disks.pop(disk_position)
-    #         for other_disk in all_disks_without_disk_to_check:
-    #             if disk_to_check is other_disk:
-    #                 return False
+    #1) first store every not-none disk in a list
+    # all_disks_without_none= []
+    # for row in board:
+    #     for disk in row:
+    #         if disk != None:
+    #             all_disks_without_none.append(disk)
+    #
+    # for disk in all_disks_without_none:
+    #     disks_without_the_disk = all_disks_without_none.remove(disk)
+    #     for other_disk in disks_without_the_disk:
+    #         if disk is other_disk:
+    #             return False
+
+
+
     return True
+
 
 
 
@@ -174,6 +179,12 @@ def get_disk_at(board, position):  ### TODO: aan alle def voldaan
         ASSUMPTIONS
         - None (same remark as for the function dimension)
      """
+    if isinstance(board,list) is False:
+        return None
+    if isinstance(position, tuple) is False:
+        return None
+    if Position.is_proper_position(dimension(board), position) is False:
+        return None
     #1) change the position in the coordinates in the matrix
     column_board_position = position[0]-1
     row_board_position = dimension(board)-(position[1]-1)
@@ -184,14 +195,10 @@ def get_disk_at(board, position):  ### TODO: aan alle def voldaan
     ###None is returned if position out of boundries or proper position
     if Position.is_proper_position(dimension(board), position) is False:
         return None
-    # ###None if board is not proper
-    # if is_proper_board(board) is False:
-    #     return None
+    ###None if board is not proper
 
+    return board[row_board_position][column_board_position]
 
-    return disk
-
-#MAKE A DEFENITION THAT CHANGES FORM MATRIX TO NORMAL POSOTIION!!!!
 
 def set_disk_at(board, position, disk):
     """
@@ -207,21 +214,18 @@ def set_disk_at(board, position, disk):
           disk for the given board.
     """
     ### Check if it is None to be safe
-    if disk == None:
-        disk_to_change = get_disk_at(board,position)
-        if Disk.is_proper_disk(dimension(board), disk_to_change) is True:
-            ###check if if rows in the same columns above have a disk
-            for row_pos in range(position[0],dimension(board)+2):  ###from row pos to end including overflow
-                if Disk.is_proper_disk(get_disk_at(board,(position[0],row_pos))) is False:
-                    return False
-    else:
+    # if disk == None and Position.is_overflow_position(dimension(board),position) is False:
+    #     disk_to_change = get_disk_at(board,position)
+    #     if Disk.is_proper_disk(dimension(board), disk_to_change) is True:
+    #         ###check if if rows in the same columns above have a disk
+    #         for row_pos in range(position[1]+1,dimension(board)+2):  ###from row pos to end including overflow
+    #             if get_disk_at(board,(position[0],row_pos)) != None:
+    #                 return False
+
     # 1) change the position in the coordinates in the matrix
-        column_board_position = position[0] - 1      ###TODO: hier een def van maken
-        row_board_position = dimension(board) - (position[1] - 1)
-        board[row_board_position][column_board_position] = disk
-
-
-
+    column_board_position = position[0] - 1      ###TODO: hier een def van maken
+    row_board_position = dimension(board) - (position[1] - 1)
+    board[row_board_position][column_board_position] = disk
 
 
 
@@ -250,7 +254,25 @@ def is_full_column(board, column):
         - The given board is a proper board, and the given column is a proper column
           for that board.
     """
-    for row in range(1,dimension(board) +1):
+    row_under_overflow = dimension(board)
+    for row in range(1,row_under_overflow+1):
+        if get_disk_at(board,(column,row)) == None:
+            return False
+    return True
+
+
+def is_full_column_with_overflow(board, column):    ###TODO: andere beschrijving geven
+    """
+       Check whether the non-overflow part of the given column on the given board
+       is completely filled with disks.
+       - The overflow cell of a full column may also contain a disk, but it may
+         also be empty.
+        ASSUMPTIONS
+        - The given board is a proper board, and the given column is a proper column
+          for that board.
+    """
+    row_overflow = dimension(board) +1
+    for row in range(1,row_overflow+1):
         if get_disk_at(board,(column,row)) == None:
             return False
     return True
@@ -265,10 +287,8 @@ def is_disk_in_overflow(board, column):     ###TODO de beschrijving veranderen
         - The given board is a proper board, and the given column is a proper column
           for that board.
     """
-    row = dimension(board) + 1
-    column_board_position = column - 1
-    row_board_position =dimension(board) - (row - 1)
-    if board[row_board_position][column_board_position] == None:
+    overflow_row = dimension(board) + 1 ###overflow_row from board
+    if get_disk_at(board,(column,overflow_row)) == None:
             return False
     return True
 
@@ -280,7 +300,7 @@ def is_full_with_one_overflow(board):     ####TODO de beschrijving veranderen
         - The given board is a proper board.
     """
     for column in range(1,dimension(board)+1):
-        if is_disk_in_overflow(board,column) is True:
+        if is_disk_in_overflow(board,column):
             return True
     return False
 
@@ -326,13 +346,13 @@ def add_disk_on_column(board, disk, column):
         - The given board is a proper board, the given column is a proper column
           for the given board, and the given disk is a proper disk for the given board.
     """
-    column_board_position = column - 1
-    for row in range(1, dimension(board)+2):
-        row_board_position = dimension(board) - (row - 1)     ###TODO: Klopt ineens niet meer
-        if board[row_board_position][column_board_position] == None:
-            board[row_board_position][column_board_position] = disk
-            return board
-    return board
+    if is_full_column_with_overflow(board,column):
+        return board
+    else:
+        for row in range(1, dimension(board)+2):
+            if get_disk_at(board,(column,row)) == None:
+                set_disk_at(board,(column,row),disk)
+                return board
 
 def inject_disk_in_column(board, disk, column):
     """
@@ -346,13 +366,12 @@ def inject_disk_in_column(board, disk, column):
           proper disk for the given board.
     """
 
-    column_board_position = column - 1
     ###change all disks in column one position above
     for row in range(dimension(board)+1,1,-1):
-        row_board_position = dimension(board) - (row - 1)
-        board[row_board_position][column_board_position] = board[row_board_position+1][column_board_position]
-
-    board[dimension(board)][column_board_position] = disk    ###TODO: gebruiken met functie
+        position_to_change= (column,row)
+        set_disk_at(board,position_to_change,get_disk_at(board,(Position.down(dimension(board),position_to_change))))
+    ### Change the in first row
+    set_disk_at(board,(column,1),disk)
 
 
 def inject_bottom_row_wrapped_disks(board):
@@ -365,7 +384,7 @@ def inject_bottom_row_wrapped_disks(board):
         - The given board is a playable board that can accept a disk.
     """
     for column in range(1,dimension(board)+1):
-        inject_disk_in_column(board,Disk.init_disk(Disk.WRAPPED,1), column)   ####TODO: welke waarde moet dit hebben
+        inject_disk_in_column(board,Disk.init_disk(Disk.WRAPPED,1), column)   ####TODO: welke waarde moet dit hebben(random)
 
 
 def remove_disk_at(board, position):
@@ -381,21 +400,18 @@ def remove_disk_at(board, position):
         NOTE
         - This function must be implemented in a RECURSIVE way.
     """
-    column= position[0]
-    row = position[1]
-    column_board_position = column - 1
-    row_board_position = dimension(board) - (row - 1)
+
     if Position.is_overflow_position(dimension(board), position):
-        board[row_board_position][column_board_position] = None
-    elif board[row_board_position][column_board_position] == None:
+        set_disk_at(board,position,None)
+    elif get_disk_at(board,position) == None:
         return
-    elif row == dimension(board):
-        board[row_board_position][column_board_position] = board[row_board_position-1][column_board_position]
-        board[row_board_position][column_board_position - 1] = None
+    elif Position.row(position) == dimension(board):
+        set_disk_at(board,position, get_disk_at(board,Position.up(dimension(board), position)))
+        set_disk_at(board,Position.up(dimension(board), position),None)
         return
     else:
-        board[row_board_position][column_board_position] = board[row_board_position-1][column_board_position]
-        remove_disk_at(board,[column,row+1])    ###TODO: recursie genoeg?
+        set_disk_at(board, position, get_disk_at(board, Position.up(dimension(board), position)))
+        remove_disk_at(board,(Position.column(position),Position.row(position)+1))
 
 
 
@@ -412,23 +428,23 @@ def get_length_vertical_chain(board, position, row_down=0):
         - This function must be implemented in a RECURSIVE way.
     """
     column = position[0]
-    row = position[1]
-    row_board_position = dimension(board) - (row - 1)
     column_board_position = column - 1
     row_down += 1
     row_Down_board_position = dimension(board) - (row_down - 1)
-
-    if board[row_board_position][column_board_position] == None:
+    if get_disk_at(board, position)  == None:
         return 0
-    if row_down == len(board):
-        return 1
-    if board[row_Down_board_position][column_board_position] == None:
+    if board[row_Down_board_position][column_board_position] == None:    ###TODO: verander dit ook in een get disk weet niet hoe
         return 0
+    if row_down == len(board)+1:
+        if get_disk_at(board,(column,row_down)) == None:
+            return 0
+        else:
+            return 1
     else:
         return 1 + get_length_vertical_chain(board, position, row_down)
 
 
-def get_length_horizontal_chain(board, position):
+def get_length_horizontal_chain(board, position, State_count = None):
     """
         Return the length of the horizontal chain of disks involving the given
         position. Zero is returned if no disk is stored at the given position.
@@ -436,25 +452,31 @@ def get_length_horizontal_chain(board, position):
         - The given board is a proper board and the given position is a
           proper position for the given board.
     """
-    column = position[0]
+    disk_column_position = Position.column(position)
     row = position[1]
     row_board_position = dimension(board) - (row - 1)
-    column_board_position = column - 1
     disks = []
-
-    if board[row_board_position][column_board_position] == None:
+###TODO: werk hier met dictionary en kijk dan of key in the  list is!!!!!!
+    if get_disk_at(board,position) == None:
         return 0
     row_in_board = board[row_board_position]
-    State_count = None
-    for disk in row_in_board:
+    Dict_disk = {}
+    for disk_position in range(len(row_in_board)):
+        disk = row_in_board[disk_position]
         if Disk.is_proper_disk(dimension(board), disk):
             disks.append(disk)
+            Dict_disk.update({disk_position+1:disk})
             State_count = True
         if disk == None and State_count == True:
-            return len(disks)
+            if disk_column_position in Dict_disk.keys():
+                return len(disks)
+            else:
+                State_count = None
+                disks = []
+
     return len(disks)
 
-
+###TODO: nog zien dat je de vorige def kunt gebruiken
 
 
 def is_to_explode(board, position):
@@ -473,8 +495,8 @@ def is_to_explode(board, position):
         return False
     Disk_value =  Disk.get_value(disk_to_check)
     Disk_state = Disk.get_state(disk_to_check)
-    if (Disk_value ==get_length_vertical_chain(board,position) or
-        Disk_value == get_length_horizontal_chain(board,position)) and Disk_state == Disk.VISIBLE:
+    if (Disk_value == get_length_vertical_chain(board, position) or Disk_value ==
+        get_length_horizontal_chain(board, position)) and Disk_state == Disk.VISIBLE:
         return True
     return False
 
@@ -497,7 +519,16 @@ def get_all_positions_to_explode(board,start_pos=(1,1)):
           with extra parameters with a default value. The documentation
           of the function must be changed in view of that.
     """
-    pass
+    if start_pos == (dimension(board),dimension(board)+1):
+        if is_to_explode(board,start_pos):
+            return frozenset({start_pos})
+        else:
+            return frozenset({})
+    elif is_to_explode(board,start_pos):
+        return frozenset({start_pos}).union(get_all_positions_to_explode(board, Position.next(dimension(board), start_pos)))
+    else:
+        return frozenset({}).union(get_all_positions_to_explode(board,Position.next(dimension(board), start_pos)))
+
 
 
 def crack_disks_at(board, positions):
@@ -511,7 +542,16 @@ def crack_disks_at(board, positions):
         - The given board is a proper board, and each of the given positions
           is a proper position for the given board.
     """
-    pass
+    for position in positions:
+        if Disk.is_proper_disk(dimension(board),get_disk_at(board,position)):
+            disk = get_disk_at(board,position)
+            if Disk.get_state(disk) == Disk.WRAPPED:
+                Disk.set_state(disk,Disk.CRACKED)
+            elif Disk.get_state(disk) == Disk.CRACKED:
+                Disk.set_state(disk,Disk.VISIBLE)
+
+
+
 
 
 def remove_all_disks_at(board, positions):
@@ -524,7 +564,13 @@ def remove_all_disks_at(board, positions):
         - The given board is a proper board, and each of the given positions
           is a proper position for the given board.
     """
-    pass
+    list_positions=list(positions)
+    ###ordering the list from highest row to lowest row
+    sorted_positions = sorted(list_positions)
+    sorted_positions =sorted_positions[::-1]
+    for position in sorted_positions:
+        remove_disk_at(board,position)
+
 
 
 ### BOARD HELPER FUNCTIONS ###

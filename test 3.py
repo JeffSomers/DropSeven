@@ -1,10 +1,3 @@
-def geef (x,y=None):
+def delete_one_thing(x):
+    x+=1
 
-    if y == None:
-        y = 7
-
-    elif x <7:
-        return 1 + geef(x-1)
-
-
-print(geef(2))

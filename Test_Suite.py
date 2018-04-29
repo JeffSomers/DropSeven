@@ -48,8 +48,8 @@ if __name__ == '__main__':
         set.union(
             #Position_Test.position_test_functions,
             #Disk_Test.disk_test_functions,
-            Board_Test.board_test_functions,
-            #Drop7_Test.Drop7_test_functions
+            #Board_Test.board_test_functions,
+            Drop7_Test.Drop7_test_functions
         )
 
     (score, max_score, failed_tests) = run_tests(test_functions)

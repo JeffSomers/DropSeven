@@ -145,7 +145,7 @@ def test_Is_Proper_Board__Same_Disk_At_Several_Positions(score, max_score):
     max_score.value += 10
     try:
         set_up()
-        Board.set_disk_at(test_board_4, (4, 4), wrapped_disk_value_3)
+        Board.set_disk_at(test_board_4, (4, 1), wrapped_disk_value_3)
         assert Board.is_proper_board(test_board_4)
         assert not Board.is_playable_board(test_board_4)
         score.value += 10

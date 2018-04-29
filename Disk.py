@@ -67,7 +67,6 @@ def set_state(disk, state):
         - The given disk is a proper disk for any board with a dimension at
           least equal to the value of the given disk.
     """
-
     disk[0] = state
 
 
@@ -88,8 +87,8 @@ def set_value(disk, value):
         - The given disk is a proper disk for any board with a dimension at
           least equal to the value of the given disk.
     """
-    disk[1]= value
 
+    disk[1] = value
 
 def get_value(disk):
     """

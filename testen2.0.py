@@ -3,7 +3,6 @@ import Disk
 import copy
 import Position
 import Drop7
-import Drop7_Test
 wrapped_disk_value_1 = None
 wrapped_disk_value_1_B = None
 wrapped_disk_value_1_C = None
@@ -159,29 +158,8 @@ def set_up():
               wrapped_disk_value_3_C, cracked_disk_value_1_B),
              (),
              (wrapped_disk_value_3_D, visible_disk_value_3)))
-
-
-
 set_up()
-test_board_6_copy = Board.get_board_copy(test_board_6)
-disks_to_drop = [visible_disk_value_4_C, visible_disk_value_5_B, visible_disk_value_3_C]
-disks_to_drop_copy = list.copy(disks_to_drop)
-highest_score, columns = \
-    Drop7.highest_greedy_score(test_board_6, disks_to_drop)
-assert highest_score == 40
-assert columns == (1, 4, 6)
-assert len(disks_to_drop) == 0
-actual_score = Drop7.play(test_board_6_copy, disks_to_drop_copy, columns)
-assert actual_score == highest_score
-assert are_equal_boards(test_board_6, test_board_6_copy)
-
-
-
-
-
-
-
-
-
-
-
+Board.print_board(test_board_4)
+Board.set_disk_at(test_board_4, (4, 1), wrapped_disk_value_3)
+Board.print_board(test_board_4)
+assert not Board.is_playable_board(test_board_4)
