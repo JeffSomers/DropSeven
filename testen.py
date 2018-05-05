@@ -164,21 +164,18 @@ def set_up():
 
 set_up()
 test_board = Board.init_board \
-    (dimension=4, given_disks= \
+    (dimension=2, given_disks= \
         ([cracked_disk_value_1, ],
-         [],
-         [cracked_disk_value_2, wrapped_disk_value_4],
-         []))
+         [cracked_disk_value_1_B, ]))
 test_board_alias = Board.init_board \
-    (dimension=4, given_disks= \
+    (dimension=2, given_disks= \
         ([cracked_disk_value_1, ],
-         [],
-         [cracked_disk_value_2, wrapped_disk_value_4],
-         []))
+         [cracked_disk_value_1_B, ]))
 test_board_copy = Board.get_board_copy(test_board)
-highest_score, columns = Drop7.highest_score(test_board, [visible_disk_value_3, visible_disk_value_3_B])
-assert highest_score == 12
-assert columns == [3, 2]
+highest_score, columns = \
+    Drop7.highest_score(test_board, [wrapped_disk_value_1, wrapped_disk_value_2, visible_disk_value_1])
+assert highest_score is None
+assert columns is None
 assert Drop7_Test.are_identical_boards(test_board, test_board_alias)
 assert Drop7_Test.are_equal_boards(test_board, test_board_copy)
 

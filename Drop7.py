@@ -123,7 +123,11 @@ def highest_greedy_score(board,disks, First_Time = True, score=None,columns=None
 
 
 
+<<<<<<< HEAD
 def highest_score(board, disks, column = None, score = 0):
+=======
+def highest_score(board, disks, column =None, score= 0):
+>>>>>>> a75dbec079f4a35896255e948eb01f1e3f6d98fa
     """
        Compute the highest possible score that can be obtained by dropping each
        of the given disks on the given board.
@@ -174,7 +178,10 @@ def highest_score(board, disks, column = None, score = 0):
             else:
                 best_option_so_far = (None, None)
         return best_option_so_far
+<<<<<<< HEAD
 
+=======
+>>>>>>> a75dbec079f4a35896255e948eb01f1e3f6d98fa
 
 
 
