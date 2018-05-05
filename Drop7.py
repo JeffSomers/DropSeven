@@ -123,7 +123,7 @@ def highest_greedy_score(board,disks, First_Time = True, score=None,columns=None
 
 
 
-def highest_score(board, disks, First_Time= True, column = None):
+def highest_score(board, disks, column = None, score = 0):
     """
        Compute the highest possible score that can be obtained by dropping each
        of the given disks on the given board.
@@ -147,22 +147,33 @@ def highest_score(board, disks, First_Time= True, column = None):
           proper disk for the given board.
         - None of the given disks is cracked.
     """
-    if First_Time is True and len(disks)==0:
-        return (0,())
+    if column is None:
+        column = []
     ###er van uit gaan dat ze allemaal gaan
-    if len(disks) == 0 and First_Time is False:
-        return 0
+    if len(disks) ==0:
+        return (score,column)
     else:
-        highest_score_so_far = 0
-        best_columns_so_far = [Board.dimension(board)]
-            for position in range(1,Board.dimension(board)+1):
-                column =  [position]
+        best_option_so_far = (None,None)
+        for position in range(Board.dimension(board),0,-1):
+            if Board.can_accept_disk(board):
                 copy_board = Board.get_board_copy(board)
-                score_disk = drop_disk_at(copy_board, disks[0], position)+highest_score(copy_board,disks[1:], False, column)
-                if (score_disk > highest_score_so_far) or (score_disk == highest_score_so_far and column < best_columns_so_far):
-                    highest_score_so_far = score_disk
-                    best_columns_so_far = column
-            return (highest_score_so_far,best_columns_so_far)
+                copy_score= copy.deepcopy(score)
+                copy_score += drop_disk_at(copy_board, copy.deepcopy(disks[0]), position)
+                column += [position]
+                copy_column = copy.deepcopy(column)
+                copy_disks = copy.deepcopy(disks)
+                option = highest_score(copy_board, copy_disks[1:], copy_column,copy_score)
+                if best_option_so_far[0] is not None:
+                    if option[0] is not None:
+                        if option[0] >= best_option_so_far[0]:
+                            best_option_so_far = option
+                else:
+                    if option is not None:
+                        best_option_so_far = option
+                column = column[:-1]
+            else:
+                best_option_so_far = (None, None)
+        return best_option_so_far
 
 
 
