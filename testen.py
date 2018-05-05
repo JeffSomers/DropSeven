@@ -163,17 +163,25 @@ def set_up():
 
 
 set_up()
-test_board_6_copy = Board.get_board_copy(test_board_6)
-disks_to_drop = [visible_disk_value_4_C, visible_disk_value_5_B, visible_disk_value_3_C]
-disks_to_drop_copy = list.copy(disks_to_drop)
-highest_score, columns = \
-    Drop7.highest_greedy_score(test_board_6, disks_to_drop)
-assert highest_score == 40
-assert columns == (1, 4, 6)
-assert len(disks_to_drop) == 0
-actual_score = Drop7.play(test_board_6_copy, disks_to_drop_copy, columns)
-assert actual_score == highest_score
-assert are_equal_boards(test_board_6, test_board_6_copy)
+test_board = Board.init_board \
+    (dimension=4, given_disks= \
+        ([cracked_disk_value_1, ],
+         [],
+         [cracked_disk_value_2, wrapped_disk_value_4],
+         []))
+test_board_alias = Board.init_board \
+    (dimension=4, given_disks= \
+        ([cracked_disk_value_1, ],
+         [],
+         [cracked_disk_value_2, wrapped_disk_value_4],
+         []))
+test_board_copy = Board.get_board_copy(test_board)
+highest_score, columns = Drop7.highest_score(test_board, [visible_disk_value_3, visible_disk_value_3_B])
+assert highest_score == 12
+assert columns == [3, 2]
+assert Drop7_Test.are_identical_boards(test_board, test_board_alias)
+assert Drop7_Test.are_equal_boards(test_board, test_board_copy)
+
 
 
 

@@ -1,7 +1,7 @@
 import Disk
 import Board
 import Position
-
+import copy
 def drop_disk_at(board, disk=None, column=None, Times_exploded=1):
     """
         Drop the given disk on top of the given column in the given board.
@@ -70,7 +70,9 @@ def best_drop_for_disk(board,disk):
     score_of_columns = []
     for column in range(1,Board.dimension(board)+1):
         copy_board = Board.get_board_copy(board)
-        score_of_columns.append((drop_disk_at(copy_board,disk,column),column))
+        copy_disk = copy.deepcopy(disk)
+        if Board.is_full_column(board, column) is False:
+            score_of_columns.append((drop_disk_at(copy_board,copy_disk,column),column))
     #2. Sort the list from low to high
     Low_to_High_score = sorted(score_of_columns)
     #3. Chose the last element of the list
@@ -78,7 +80,7 @@ def best_drop_for_disk(board,disk):
     return (Column_highest_score,drop_disk_at(board,disk,Column_highest_score))
 
 
-def highest_greedy_score(board,disks,best_columns=tuple()):
+def highest_greedy_score(board,disks, First_Time = True, score=None,columns=None):
     """
        Compute the highest possible score that can be obtained by dropping each
        of the given disks on the given board in a greedy way.
@@ -102,22 +104,26 @@ def highest_greedy_score(board,disks,best_columns=tuple()):
           proper disk for the given board.
         - None of the given disks is cracked.
     """
-    if Board.can_accept_disk(board) and len(disks) >= 1:
-        disk_to_place= disks[0]
-        best_score_column = best_drop_for_disk(Board.get_board_copy(board),disk_to_place)[0]
-        best_columns += (best_score_column,)
-        if len(disks) == 1:
-            del disks[0]
-            return drop_disk_at(board, disk_to_place,best_score_column), highest_greedy_score(board, disks, best_columns)
-        else:
-            disks = disks[1:]
-            return (drop_disk_at(board,disk_to_place, best_score_column) + highest_greedy_score(board, disks, best_columns))
+    if First_Time == True:
+        score = 0
+        columns = ()
+        return highest_greedy_score(board, disks, False, score, columns)
+
+    elif (len(disks) == 0 or Board.can_accept_disk(board) is False) and First_Time == False:
+        return (score, columns)
     else:
-        return best_columns
+        disk_to_place = disks[0]
+        best_score_column = best_drop_for_disk(board,disk_to_place)
+        score_best_disk = best_score_column[1]
+        column_best_disk = best_score_column[0]
+        score += score_best_disk
+        columns += (column_best_disk,)
+        del disks[0]
+        return highest_greedy_score(board, disks, False, score, columns)
 
 
 
-def highest_score(board, disks):
+def highest_score(board, disks, First_Time= True, column = None):
     """
        Compute the highest possible score that can be obtained by dropping each
        of the given disks on the given board.
@@ -141,7 +147,25 @@ def highest_score(board, disks):
           proper disk for the given board.
         - None of the given disks is cracked.
     """
-    pass
+    if First_Time is True and len(disks)==0:
+        return (0,())
+    ###er van uit gaan dat ze allemaal gaan
+    if len(disks) == 0 and First_Time is False:
+        return 0
+    else:
+        highest_score_so_far = 0
+        best_columns_so_far = [Board.dimension(board)]
+            for position in range(1,Board.dimension(board)+1):
+                column =  [position]
+                copy_board = Board.get_board_copy(board)
+                score_disk = drop_disk_at(copy_board, disks[0], position)+highest_score(copy_board,disks[1:], False, column)
+                if (score_disk > highest_score_so_far) or (score_disk == highest_score_so_far and column < best_columns_so_far):
+                    highest_score_so_far = score_disk
+                    best_columns_so_far = column
+            return (highest_score_so_far,best_columns_so_far)
+
+
+
 
 
 

@@ -3,6 +3,7 @@
 import Disk
 import Position
 import copy
+import random
 def is_proper_board(board):
     """
         Check whether the given board is a proper board. The function
@@ -14,8 +15,8 @@ def is_proper_board(board):
         ASSUMPTIONS
         - None
     """
-    if isinstance(board,list) is False:           ###is deze voorwaarde nodig
-        return False
+#    if isinstance(board,list) is False:           ###is deze voorwaarde nodig
+#        return False
     if board == None:
         return False
     elif dimension(board) <= 0:
@@ -57,20 +58,16 @@ def is_playable_board(board):
                     return False
     #The same disk is not stored at several positions on the given board.
     #1) first store every not-none disk in a list
-    # all_disks_without_none= []
-    # for row in board:
-    #     for disk in row:
-    #         if disk != None:
-    #             all_disks_without_none.append(disk)
-    #
-    # for disk in all_disks_without_none:
-    #     disks_without_the_disk = all_disks_without_none.remove(disk)
-    #     for other_disk in disks_without_the_disk:
-    #         if disk is other_disk:
-    #             return False
+    all_disks_without_none= []
+    for row in board:
+        for disk in row:
+            if disk != None:
+                all_disks_without_none.append(disk)
 
-
-
+    for pos_disk1 in range(len(all_disks_without_none)):
+        for pos_disk2 in range(len(all_disks_without_none)):
+            if pos_disk1 != pos_disk2 and all_disks_without_none[pos_disk1] is all_disks_without_none[pos_disk2]:
+                return False
     return True
 
 
@@ -121,7 +118,7 @@ def init_board(dimension, given_disks=()):
     return Matrix
 
 
-def get_board_copy(board):    ###TODO: Kan ik deepcopy gebruiken
+def get_board_copy(board):
     """
       Return a full copy of the given board.
       - The resulting copy contains copies of the disks stored
@@ -147,7 +144,7 @@ def dimension(board):
           is_proper_board itself)
     """
     #check for a board
-    if not isinstance(board, (list,tuple)):  ###TODO: mogen we boek gebruiken
+    if not isinstance(board, (list,tuple)):
         return None
     if len(board)==0:
         return None
@@ -168,7 +165,7 @@ def dimension(board):
 
 
 
-def get_disk_at(board, position):  ### TODO: aan alle def voldaan
+def get_disk_at(board, position):
     """
         Return the disk at the given position on the given board.
         - None is returned if there is no disk at the given position.
@@ -223,7 +220,7 @@ def set_disk_at(board, position, disk):
     #                 return False
 
     # 1) change the position in the coordinates in the matrix
-    column_board_position = position[0] - 1      ###TODO: hier een def van maken
+    column_board_position = position[0] - 1
     row_board_position = dimension(board) - (position[1] - 1)
     board[row_board_position][column_board_position] = disk
 
@@ -332,6 +329,7 @@ def can_accept_disk(board):
     """
     if is_full_with_one_overflow(board) is False and is_full(board) is False:
         return True
+    return False
 
 
 def add_disk_on_column(board, disk, column):
@@ -384,7 +382,7 @@ def inject_bottom_row_wrapped_disks(board):
         - The given board is a playable board that can accept a disk.
     """
     for column in range(1,dimension(board)+1):
-        inject_disk_in_column(board,Disk.init_disk(Disk.WRAPPED,1), column)   ####TODO: welke waarde moet dit hebben(random)
+        inject_disk_in_column(board,Disk.init_disk(Disk.WRAPPED,random.randint(0,dimension(board))), column)
 
 
 def remove_disk_at(board, position):
@@ -456,7 +454,6 @@ def get_length_horizontal_chain(board, position, State_count = None):
     row = position[1]
     row_board_position = dimension(board) - (row - 1)
     disks = []
-###TODO: werk hier met dictionary en kijk dan of key in the  list is!!!!!!
     if get_disk_at(board,position) == None:
         return 0
     row_in_board = board[row_board_position]

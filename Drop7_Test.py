@@ -856,13 +856,13 @@ Drop7_test_functions = \
         test_Highest_Greedy_Score__Several_Placable_Disks,
         test_Highest_Greedy_Score__Several_Disks_Not_All_Placable,
 
-        # test_Highest_Score__NoDisks,
-        # test_Highest_Score__Single_Disk_No_Explosions,
-        # test_Highest_Score__Single_Exploding_Disk_Several_Columns,
-        # test_Highest_Score__Single_Disk_Several_Explosions,
-        # test_Highest_Score__Two_Disks_Exploding_At_Each_Drop,
-        # test_Highest_Score__Two_Disks_Exploding_At_Last_Drop,
-        # test_Highest_Score__Too_Many_Disks,
-        # test_Highest_Score__Several_Disks_Case_1,
-        # test_Highest_Score__Several_Disks_Case_2
+        test_Highest_Score__NoDisks,
+        test_Highest_Score__Single_Disk_No_Explosions,
+        test_Highest_Score__Single_Exploding_Disk_Several_Columns,
+        test_Highest_Score__Single_Disk_Several_Explosions,
+        test_Highest_Score__Two_Disks_Exploding_At_Each_Drop,
+        test_Highest_Score__Two_Disks_Exploding_At_Last_Drop,
+        test_Highest_Score__Too_Many_Disks,
+        test_Highest_Score__Several_Disks_Case_1,
+        test_Highest_Score__Several_Disks_Case_2
     }
